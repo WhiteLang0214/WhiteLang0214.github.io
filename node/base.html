@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>事件循环 | note</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/lang.png">
+    <meta name="description" content="langxue's blog">
+    
+    <link rel="preload" href="/assets/css/0.styles.443403f7.css" as="style"><link rel="preload" href="/assets/js/app.3affcc69.js" as="script"><link rel="preload" href="/assets/js/2.672bef9f.js" as="script"><link rel="preload" href="/assets/js/14.e41d8f75.js" as="script"><link rel="prefetch" href="/assets/js/10.3b4e95cf.js"><link rel="prefetch" href="/assets/js/11.3607e33a.js"><link rel="prefetch" href="/assets/js/12.9ae9b6ed.js"><link rel="prefetch" href="/assets/js/13.640441ab.js"><link rel="prefetch" href="/assets/js/15.47483ee1.js"><link rel="prefetch" href="/assets/js/16.0f60e20e.js"><link rel="prefetch" href="/assets/js/17.7b6f93c3.js"><link rel="prefetch" href="/assets/js/18.d01d55fc.js"><link rel="prefetch" href="/assets/js/19.19e810ea.js"><link rel="prefetch" href="/assets/js/20.6381ff8a.js"><link rel="prefetch" href="/assets/js/21.f19afff0.js"><link rel="prefetch" href="/assets/js/22.5e2936a7.js"><link rel="prefetch" href="/assets/js/23.4bc59325.js"><link rel="prefetch" href="/assets/js/24.38718534.js"><link rel="prefetch" href="/assets/js/25.fb93bd24.js"><link rel="prefetch" href="/assets/js/26.ac3d43f8.js"><link rel="prefetch" href="/assets/js/27.a6fb9324.js"><link rel="prefetch" href="/assets/js/28.c86bef93.js"><link rel="prefetch" href="/assets/js/29.0273a5ee.js"><link rel="prefetch" href="/assets/js/3.3a393fef.js"><link rel="prefetch" href="/assets/js/30.f996e6c7.js"><link rel="prefetch" href="/assets/js/31.e46880bb.js"><link rel="prefetch" href="/assets/js/32.5da11746.js"><link rel="prefetch" href="/assets/js/33.4b24bea9.js"><link rel="prefetch" href="/assets/js/34.8242ab4b.js"><link rel="prefetch" href="/assets/js/4.0c748dc5.js"><link rel="prefetch" href="/assets/js/5.1c4d6539.js"><link rel="prefetch" href="/assets/js/6.744a911e.js"><link rel="prefetch" href="/assets/js/7.9a79fc7f.js"><link rel="prefetch" href="/assets/js/8.8180d4af.js"><link rel="prefetch" href="/assets/js/9.e5fec9ba.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.443403f7.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><img src="/lang.png" alt="note" class="logo"> <span class="site-name can-hide">note</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/js/" class="nav-link">
+  js
+</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">
+  算法题库
+</a></div><div class="nav-item"><a href="https://baidu.com" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  微博
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/js/" class="nav-link">
+  js
+</a></div><div class="nav-item"><a href="/algorithm/" class="nav-link">
+  算法题库
+</a></div><div class="nav-item"><a href="https://baidu.com" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  微博
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><section class="sidebar-group collapsable depth-0"><a href="/vue3/" class="sidebar-heading clickable"><span>VUE3</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/react/" class="sidebar-heading clickable"><span>REACT</span> <span class="arrow right"></span></a> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><a href="/js/" class="sidebar-heading clickable"><span>JS</span> <span class="arrow right"></span></a> <!----></section></li><li><a href="/git/" class="sidebar-link">GIT</a></li><li><section class="sidebar-group collapsable depth-0"><a href="/node/" class="sidebar-heading clickable router-link-active open"><span>Node</span> <span class="arrow down"></span></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/node/base.html" aria-current="page" class="active sidebar-link">事件循环</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/node/base.html#事件循环解析机制" class="sidebar-link">事件循环解析机制</a></li><li class="sidebar-sub-header"><a href="/node/base.html#定时器" class="sidebar-link">定时器</a></li><li class="sidebar-sub-header"><a href="/node/base.html#挂起的回调函数" class="sidebar-link">挂起的回调函数</a></li><li class="sidebar-sub-header"><a href="/node/base.html#轮询" class="sidebar-link">轮询</a></li><li class="sidebar-sub-header"><a href="/node/base.html#检查阶段" class="sidebar-link">检查阶段</a></li><li class="sidebar-sub-header"><a href="/node/base.html#关闭的回调函数" class="sidebar-link">关闭的回调函数</a></li><li class="sidebar-sub-header"><a href="/node/base.html#setimmediate-对比-settimeout" class="sidebar-link">setImmediate() 对比 setTimeout()</a></li><li class="sidebar-sub-header"><a href="/node/base.html#process-nexttick" class="sidebar-link">process.nextTick()</a></li><li class="sidebar-sub-header"><a href="/node/base.html#为什么要使用-process-nexttick" class="sidebar-link">为什么要使用 process.nextTick()</a></li></ul></li><li><a href="/node/eventEmitter.html" class="sidebar-link">EventEmitter类</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/node/eventEmitter.html#参数和this-传给监听器" class="sidebar-link">参数和this 传给监听器</a></li><li class="sidebar-sub-header"><a href="/node/eventEmitter.html#异步-vs-同步" class="sidebar-link">异步 VS 同步</a></li><li class="sidebar-sub-header"><a href="/node/eventEmitter.html#方法" class="sidebar-link">方法</a></li><li class="sidebar-sub-header"><a href="/node/eventEmitter.html#类方法" class="sidebar-link">类方法</a></li><li class="sidebar-sub-header"><a href="/node/eventEmitter.html#事件" class="sidebar-link">事件</a></li></ul></li><li><a href="/node/buffer.html" class="sidebar-link">Buffer</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/node/buffer.html#blob-类" class="sidebar-link">Blob 类</a></li><li class="sidebar-sub-header"><a href="/node/buffer.html#buffer-类" class="sidebar-link">Buffer 类</a></li></ul></li><li><a href="/node/stream.html" class="sidebar-link">stream 流</a></li></ul></section></li><li><a href="/eslint/" class="sidebar-link">ESLINT</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/eslint/#no-param-reassign" class="sidebar-link">no-param-reassign</a></li><li class="sidebar-sub-header"><a href="/eslint/#do-not-use-new-for-side-effects-no-new" class="sidebar-link">Do not use 'new' for side effects (no-new)</a></li><li class="sidebar-sub-header"><a href="/eslint/#unary-operator-used-no-plusplus" class="sidebar-link">Unary operator '++' used no-plusplus</a></li></ul></li><li><a href="/optimize/" class="sidebar-link">性能优化</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/optimize/#_1-1-技术选型" class="sidebar-link">1.1 技术选型</a></li><li class="sidebar-sub-header"><a href="/optimize/#_1-2-network" class="sidebar-link">1.2 network</a></li><li class="sidebar-sub-header"><a href="/optimize/#_1-3-webpack-bundle-analyzer" class="sidebar-link">1.3 webpack-bundle-analyzer</a></li><li class="sidebar-sub-header"><a href="/optimize/#_1-4-performance" class="sidebar-link">1.4 performance</a></li><li class="sidebar-sub-header"><a href="/optimize/#_1-5-performancenavigtiontiming" class="sidebar-link">1.5 performanceNavigtionTiming</a></li><li class="sidebar-sub-header"><a href="/optimize/#_1-6-抓包" class="sidebar-link">1.6 抓包</a></li><li class="sidebar-sub-header"><a href="/optimize/#_1-7-性能测试工具" class="sidebar-link">1.7 性能测试工具</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-1-tree-shaking" class="sidebar-link">2.1 tree shaking</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-2-split-chunks-分包" class="sidebar-link">2.2 split chunks(分包)</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-3-拆包" class="sidebar-link">2.3 拆包</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-4-gzip" class="sidebar-link">2.4 gzip</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-5-图片压缩" class="sidebar-link">2.5 图片压缩</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-6-图片分割" class="sidebar-link">2.6 图片分割</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-7-sprite-雪碧图-精灵图" class="sidebar-link">2.7 sprite（雪碧图/精灵图）</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-8-cdn-内容分发网络" class="sidebar-link">2.8 CDN（内容分发网络）</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-9-懒加载" class="sidebar-link">2.9 懒加载</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-10-iconfont-字体图标" class="sidebar-link">2.10 iconfont(字体图标)</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-11-逻辑后移" class="sidebar-link">2.11 逻辑后移</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-12-算法复杂度" class="sidebar-link">2.12 算法复杂度</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-13-组件渲染" class="sidebar-link">2.13 组件渲染</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-14-node-middleware-node-中间件" class="sidebar-link">2.14 node middleware(node 中间件)</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-15-web-worker" class="sidebar-link">2.15 web worker</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-16-缓存" class="sidebar-link">2.16 缓存</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-17-gpu-渲染" class="sidebar-link">2.17 GPU 渲染</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-18-ajax-可缓存" class="sidebar-link">2.18 Ajax 可缓存</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-19-resource-hints" class="sidebar-link">2.19 Resource Hints</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-20-ssr" class="sidebar-link">2.20 SSR</a></li><li class="sidebar-sub-header"><a href="/optimize/#_2-21-unpkg" class="sidebar-link">2.21 UNPKG</a></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="事件循环"><a href="#事件循环" class="header-anchor">#</a> 事件循环</h1> <ul><li>事件循环是 node.js 处理非阻塞 I/O 的处理机制。在特殊时候，会把 javascript 单线程的处理转移到内核中</li></ul> <h2 id="事件循环解析机制"><a href="#事件循环解析机制" class="header-anchor">#</a> 事件循环解析机制</h2> <ul><li>当启动 node.js，初始化事件循环，处理已提供的输入脚本（或丢入的REPL），可能会调取异步API、调度定时器、process.nextTick()，然后开始处理事件循环</li></ul> <div class="language-html extra-class"><pre class="language-html"><code>
+   ┌───────────────────────────┐
+┌─&gt;│           timers          │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │     pending callbacks     │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │       idle, prepare       │
+│  └─────────────┬─────────────┘      ┌───────────────┐
+│  ┌─────────────┴─────────────┐      │   incoming:   │
+│  │           poll            │&lt;─────┤  connections, │
+│  └─────────────┬─────────────┘      │   data, etc.  │
+│  ┌─────────────┴─────────────┐      └───────────────┘
+│  │           check           │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+└──┤      close callbacks      │
+   └───────────────────────────┘
+
+</code></pre></div><h2 id="定时器"><a href="#定时器" class="header-anchor">#</a> 定时器</h2> <h2 id="挂起的回调函数"><a href="#挂起的回调函数" class="header-anchor">#</a> 挂起的回调函数</h2> <h2 id="轮询"><a href="#轮询" class="header-anchor">#</a> 轮询</h2> <ul><li><p>重要功能</p> <ul><li>计算应该阻塞和轮询的 I/O 时间</li> <li>处理轮询队列中的事件</li></ul></li> <li><p>当事件进入轮询阶段，并没有被调度的计时器时，执行以下：</p> <ul><li>如果轮询队列不为空，事件循环将 循环访问 回调队列 并 同步执行他们，直到队列用尽 或 达到系统相关的硬件限制</li> <li>如果轮询队列为空，
+<ul><li>脚本被 setImmediate() 调度，则事件循环结束轮询，并继续检查阶段以执行那些被调度的脚本</li> <li>若未被 setImmediate() 调度，则事件循环将等待回调添加到队列中，立即执行脚本</li></ul></li> <li>一旦轮询队列为空，事件循环将检查已达到时间阈值的计时器，如果一个或多个计时器已准备就绪，则事件循环将绕回计时器阶段，执行计时器回调</li></ul></li></ul> <h2 id="检查阶段"><a href="#检查阶段" class="header-anchor">#</a> 检查阶段</h2> <ul><li><p>此阶段允许轮询阶段完成后，立即执行回调</p></li> <li><p>如果轮询队列为空闲，检查到 setImmediate() 调用的事件被排列到队列中，则事件循环可能继续 检查 阶段，而不是等待</p></li> <li><p>setImmediate() 实际上是事件循环的单独阶段运行的特殊计时器。它使用一个 libuv api 安排回调在轮询阶段完成后执行</p></li> <li><p>通常在执行代码时，事件循环最终会命中轮询阶段。在等待传入连接、请求等。但 如果回调被 setimmediate() 调度过，并且轮询阶段为 空闲 状态，则它将结束此阶段，并继续到检查阶段，而不是继续等待轮询事件。</p></li></ul> <h2 id="关闭的回调函数"><a href="#关闭的回调函数" class="header-anchor">#</a> 关闭的回调函数</h2> <ul><li>如果套接字 或 处理函数 突然关闭（例如： socket.destroy())，则 close 回调将在这个阶段发出。否则它将通过 process.nextTick() 发出。</li></ul> <h2 id="setimmediate-对比-settimeout"><a href="#setimmediate-对比-settimeout" class="header-anchor">#</a> setImmediate() 对比 setTimeout()</h2> <ul><li><p>setImmediate() 和 setTimeout() 很类似，但基于被调用的时机，二者有不同表现</p> <ul><li>setImmediate() 在当前 轮询 结束时，立即执行脚本</li> <li>setTimeout() 在最小阈值（ms 单位）之后，执行脚本</li></ul></li> <li><p>执行顺序根据调用他们的上下文决定。如果被不在 I/O 周期（即主模块）调用，受进程性能的约束（可能会受系统中其他进程的影响），执行顺序不确定。</p></li></ul> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token function">setImmediate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Immediate'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Timeout'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ node immediate.js
+timeout
+immediate
+
+$ node immediate.js
+immediate
+timeout
+</code></pre></div><ul><li>如果将两个函数放在 I/O 循环内调用，setImmediate 总被优先调用</li></ul> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'fs'</span><span class="token punctuation">)</span>
+
+fs<span class="token punctuation">.</span><span class="token function">readFile</span><span class="token punctuation">(</span>__filename<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'timeout'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">setImmediate</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'immediate'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ node immediate.js
+timeout
+immediate
+
+$ node immediate.js
+timeout
+immediate
+
+</code></pre></div><ul><li>使用 setImmediate() 较于 setTimeout() 的优势在于，如果setImmedate() 是在 I/O 周期内被调用的，那么它将会在任何计时器之前执行，跟存在多少个定时器无关</li></ul> <h2 id="process-nexttick"><a href="#process-nexttick" class="header-anchor">#</a> process.nextTick()</h2> <ul><li><p>从技术上讲，process.nextTick() 不是事件循环的一部分。相反，在当前操作完成之后执行 nextTickQueue，不管事件循环的当前阶段如何。这里的一个操作被视为一个从底层 C/C++ 处理器开始过渡，并且处理需要执行的 javascript 代码</p></li> <li><p>任何时候在给定的阶段调用 process.nextTick()，回调将在事件循环继续之前解析。可能会发生糟糕的事情，因为允许 <b>递归调用 process.nextTick() 来饿死 I/O，阻止事件循环到达轮询阶段</b></p></li> <li><p>原因是：它的一部分设计理念，其中 API 应该始终是异步的，即使不必是。以下代码分析：命名了一个函数 someAsyncApiCall，提供给 someAsyncApiCall 一个回调函数，该回调函数是在事件循环的同一阶段内被调用，因为 someAsyncApiCall() 并没有异步执行任何事情。结果回调函数尝试引用 bar，但此时只定义并没有赋值给值，所以输出 undefined，因为脚本尚未运行完成。</p></li> <li><p>要想正确输出 bar 的值，通过将回调置于 process.nextTick() 中，脚本仍有运行的能力，允许在调用回调之前初始化所有的变量和函数等。</p></li> <li><p>还有让事件循环不在继续的优点，适用于让事件循环继续之前，警告用户发生错误。</p></li></ul> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token keyword">let</span> bar<span class="token punctuation">;</span>
+
+<span class="token comment">// this has an asynchronous signature, but calls callback synchronously</span>
+<span class="token keyword">function</span> <span class="token function">someAsyncApiCall</span><span class="token punctuation">(</span><span class="token parameter">callback</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token function">callback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+<span class="token comment">// the callback is called before `someAsyncApiCall` completes.</span>
+<span class="token function">someAsyncApiCall</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  <span class="token comment">// since someAsyncApiCall has completed, bar hasn't been assigned any value</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'bar'</span><span class="token punctuation">,</span> bar<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// undefined</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+bar <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+</code></pre></div><p>#3 process.nextTick() 对比 setImmediate()</p> <ul><li><p>process.nextTick 在同一阶段立即执行</p></li> <li><p>setImmediate() 在事件循环的接下来的迭代或 'tick' 上触发</p></li> <li><p>建议开发人员在所有情况下都使用 setImmediate()，因为它更容易理解</p></li></ul> <h2 id="为什么要使用-process-nexttick"><a href="#为什么要使用-process-nexttick" class="header-anchor">#</a> 为什么要使用 process.nextTick()</h2> <ul><li><p>允许用户处理错误，清理任何不需要的资源，或在事件循环继续之前重试请求</p></li> <li><p>有时有让回调在栈展开之后，但在事件循环继续之前调用的需要</p></li></ul> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token keyword">const</span> EventEmitter <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'events'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> util <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'util'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">MyEmitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">EventEmitter</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//   this.emit('event');</span>
+
+
+  <span class="token comment">// use nextTick to emit the event once a handler is assigned</span>
+  process<span class="token punctuation">.</span><span class="token function">nextTick</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+util<span class="token punctuation">.</span><span class="token function">inherits</span><span class="token punctuation">(</span>MyEmitter<span class="token punctuation">,</span> EventEmitter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> myEmitter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyEmitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+myEmitter<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'an event occurred!'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>运行的函数构造函数 MyEmitter 是从 EventEmitter 继承的，想调用构造函数，不能在构造函数中立即触发事件，因为脚本还未处理到为该事件分配回调函数的地方。因此在构造函数本身中，使用 process.nextTick() 来设置回调，以便在构造函数完成后，发出该事件。
+</code></pre></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">更新时间:</span> <span class="time">9/6/2021, 1:47:39 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/git/" class="prev">
+        GIT
+      </a></span> <span class="next"><a href="/node/eventEmitter.html">
+        EventEmitter类
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.3affcc69.js" defer></script><script src="/assets/js/2.672bef9f.js" defer></script><script src="/assets/js/14.e41d8f75.js" defer></script>
+  </body>
+</html>
